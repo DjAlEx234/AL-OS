@@ -184,6 +184,7 @@ void irq_handler(struct regs *r)
 void error_handler(char* errortext)
 {
   prints(errortext, 7, 2);
+  prints("\nThis line is auto generated, make sure that this is visible.", 2, 5);
   asm ("cli");
   while (1) {}
 }
