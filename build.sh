@@ -39,4 +39,4 @@ else
 	echo No multiboot
 fi
 echo Now loading QEMU...
-qemu-system-i386 -kernel AL-OS.bin
+qemu-system-i386 -kernel AL-OS.bin -d guest_errors

@@ -20,7 +20,11 @@ enum color_list {
   White = 15,
 };
 void terminal_init(void);
+void terminal_set(int r, int c);
 uint16_t char_entry(unsigned char c, uint8_t color);
 uint8_t char_color(enum color_list fg, enum color_list bg);
-void printc(char c, int color, int x, int y);
+void printc(char c, int color);
+void prints(char* s, enum color_list fg, enum color_list bg);
+int terminal_get_row();
+int terminal_get_column();
 #endif

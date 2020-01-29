@@ -2,7 +2,16 @@
 #include <stddef.h>
 #include "terminal.h"
 #include "asm-io.h"
-void disable_cursor()//imported function from AlexOS
+int string_len(const char* string)
+{
+	int len = 0;
+	while (string[len])
+		len++;
+	if (string[0] == 0)
+		return len - 1;
+	return len;
+}
+void disable_cursor()
 {
 	outb(0x3D4, 0x0A);
 	outb(0x3D5, 0x20);
@@ -19,20 +28,57 @@ uint8_t char_color(enum color_list fg, enum color_list bg)
 {
   return fg | bg << 4;
 }
-void printc(char c, int color, int x, int y)
+int terminal_get_row()
 {
-  video_mem[y * width + x] = char_entry(c, color);
+	return row;
+}
+int terminal_get_column()
+{
+	return column;
+}
+void terminal_set(int r, int c)
+{
+	row = r;
+	column = c;
+}
+void printc(char c, int color)
+{
+	if (c == '\0')
+		return;
+	else if (c == '\n')
+	{
+		int left = 80 - column - 1;// new line was a bit over reactive
+		for (int i = 0; i != left; i++)
+			printc(' ', color);
+	}
+	else if (c != '\n')
+		video_mem[row * width + column] = char_entry(c, color);
+	if (++column == width)
+	{
+		column = 0;
+		if (++row == height)
+		{
+			row = 24; //eventually replace with scroll
+		}
+	}
+}
+void prints(char* s, enum color_list fg, enum color_list bg)
+{
+	for (int i = 0; i < string_len(s); i++)
+		printc(s[i], char_color(fg, bg));
 }
 void terminal_init(void)
 {
   disable_cursor();
+	int start_fg = 0;
+	int start_bg = 0;
   row = 0;
   column = 0;
   video_mem = (uint16_t*)0xB8000;
   for (int y = 0; y < height; y++){
     for (int x = 0; x < width; x++){
       int spot = y * width + x;
-      video_mem[spot] = char_entry(' ', char_color(7, 0));
+      video_mem[spot] = char_entry(' ', char_color(start_fg, start_bg));
     }
   }
 }
