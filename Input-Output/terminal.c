@@ -47,7 +47,7 @@ void printc(char c, int color)
 		return;
 	else if (c == '\n')
 	{
-		int left = 80 - column - 1;// new line was a bit over reactive
+		int left = 80 - column - 1;//new line was a bit over reactive
 		for (int i = 0; i != left; i++)
 			printc(' ', color);
 	}
@@ -57,9 +57,7 @@ void printc(char c, int color)
 	{
 		column = 0;
 		if (++row == height)
-		{
 			row = 24; //eventually replace with scroll
-		}
 	}
 }
 void prints(char* s, enum color_list fg, enum color_list bg)
