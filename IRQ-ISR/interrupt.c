@@ -2,6 +2,7 @@
 #include <stddef.h>
 #include "asm-io.h"
 #include "interrupt.h"
+#include "terminal.h"
 extern void isr0();
 extern void isr1();
 extern void isr2();
@@ -182,8 +183,7 @@ void irq_handler(struct regs *r)
 }
 void error_handler(char* errortext)
 {
-  //add error message here
-  errortext = errortext; //remove warning
+  prints(errortext, 7, 2);
   asm ("cli");
   while (1) {}
 }

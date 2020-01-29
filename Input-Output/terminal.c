@@ -49,7 +49,7 @@ void printc(char c, int color)
 	{
 		int left = 80 - column - 1;//new line was a bit over reactive
 		for (int i = 0; i != left; i++)
-			printc(' ', color);
+			printc(' ', char_color(0, 0));
 	}
 	else if (c != '\n')
 		video_mem[row * width + column] = char_entry(c, color);

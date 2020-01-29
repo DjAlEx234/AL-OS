@@ -3,12 +3,11 @@
 void entry(void)
 {
   terminal_init();
-  prints("AL-OS\nVersion 0.0.1\nStage Alpha", 7, 0);
   interrupt_install();
   //keyboard install
-  //boot screen
+  prints("AL-OS\nVersion 0.0.1\nStage Alpha", 7, 0);
   //leave to main programming loop
-  //add ended loop catch
+  error_handler("\nEnded loop, check possible exits!");
   asm("cli");
   while (1);
 }
