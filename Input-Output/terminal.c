@@ -1,7 +1,7 @@
 #include <stdint.h>
 #include <stddef.h>
-#include "terminal.h"
 #include "asm-io.h"
+#include "terminal.h"
 int string_len(const char* string)
 {
 	int len = 0;

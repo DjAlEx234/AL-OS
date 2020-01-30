@@ -23,11 +23,13 @@ i686-elf-gcc -c ../IRQ-ISR/interrupt.c -o interrupt.o -std=gnu99 -ffreestanding 
 cfc
 i686-elf-gcc -c ../Input-Output/terminal.c -o terminal.o -std=gnu99 -ffreestanding -O2 -Wall -Wextra -I"../Headers/"
 cfc
+i686-elf-gcc -c ../Input-Output/keyboard.c -o keyboard.o -std=gnu99 -ffreestanding -O2 -Wall -Wextra -I"../Headers/"
+cfc
 nasm -felf32 ../Boot-Loader/entry.asm -o entry2.o
 afc
 nasm -felf32 ../IRQ-ISR/interrupt.asm -o interrupt2.o
 afc
-i686-elf-gcc -T ../Boot-Loader/link.ld -o ../AL-OS.bin -I"../Headers/" -ffreestanding -O2 -nostdlib entry.o entry2.o asm-io.o interrupt.o interrupt2.o terminal.o
+i686-elf-gcc -T ../Boot-Loader/link.ld -o ../AL-OS.bin -I"../Headers/" -ffreestanding -O2 -nostdlib entry.o entry2.o asm-io.o interrupt.o interrupt2.o terminal.o keyboard.o
 echo Stitching all output files...
 rm *.*
 cd ..
