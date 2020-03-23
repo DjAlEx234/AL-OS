@@ -1,7 +1,10 @@
 #include <stddef.h>
 #include <stdint.h>
 #include "asm-io.h"
+#include "keyboard.h"
 #include "interrupt.h"
+#include "terminal.h"
+#include "main.h"
 unsigned char keyboard_us[128] =
 {
     0,  27,
@@ -40,22 +43,16 @@ unsigned char keyboard_us[128] =
     0, 0,  //F11 to F12
     0,	//Other keys don't matter (yet)
 };
-int keyboard_reciever_count = 0;
-void *keyboard_recievers[4] =
+void *keyboard_reciever;
+char key;
+void keyboard_call()
 {
-    0, 0, 0, 0
-};
-void keyboard_call(char send)
-{
-  for (int i = 0; i < keyboard_reciever_count; i++)
-  {
-    void (*run)(char c) = keyboard_recievers[i];
-		run(send);
-  }
+  void (*run)(char c) = keyboard_reciever;
+  run(key);
 }
 void keyboard_handler(__attribute__((unused)) struct regs *r)
 {
-  unsigned char scancode, key;
+  unsigned char scancode;
   scancode = inb(0x60);
   key = keyboard_us[scancode];
   if (scancode & 0x80)//case for shift
@@ -64,10 +61,11 @@ void keyboard_handler(__attribute__((unused)) struct regs *r)
   }
   else
   {
-    keyboard_call(key);
+    keyboard_call();
   }
 }
 void keyboard_init()
 {
   irq_install_handler(1, keyboard_handler);
+  keyboard_reciever = *command_key_in;
 }

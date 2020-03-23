@@ -41,6 +41,16 @@ void terminal_set(int r, int c)
 	row = r;
 	column = c;
 }
+void terminal_scroll()
+{
+	for (int num1 = 0; num1 < height; num1++)
+	{
+		for (int num2 = 0; num2 < width; num2++)
+		{
+			video_mem[num1 * width + num2] = video_mem[(num1 + 1) * width + num2];
+		}
+	}
+}
 void printc(char c, int color)
 {
 	if (c == '\0')
@@ -57,7 +67,10 @@ void printc(char c, int color)
 	{
 		column = 0;
 		if (++row == height)
-			row = 24; //eventually replace with scroll
+		{
+			terminal_scroll();
+			row = 24;
+		}
 	}
 }
 void prints(char* s, enum color_list fg, enum color_list bg)
@@ -70,8 +83,6 @@ void terminal_init(void)
   disable_cursor();
 	int start_fg = 0;
 	int start_bg = 0;
-  row = 0;
-  column = 0;
   video_mem = (uint16_t*)0xB8000;
   for (int y = 0; y < height; y++){
     for (int x = 0; x < width; x++){
@@ -79,4 +90,6 @@ void terminal_init(void)
       video_mem[spot] = char_entry(' ', char_color(start_fg, start_bg));
     }
   }
+	row = 0;
+  column = 0;
 }

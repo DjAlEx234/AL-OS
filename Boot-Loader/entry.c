@@ -1,13 +1,14 @@
 #include "interrupt.h"
 #include "terminal.h"
+#include "keyboard.h"
 void entry(void)
 {
-  terminal_init();
   interrupt_install();
-  //keyboard install
-  prints("AL-OS\nVersion 0.0.1\nStage Alpha", 7, 0);
-  //leave to main programming loop
+  terminal_init();
+  keyboard_init();
+  prints("AL-OS\nVersion 0.0.2\nStage Alpha\n", 7, 0);
+  //enter main programming loop
+  while (1) {}
   error_handler("\nEnded loop, check possible exits!");
-  asm("cli");
   while (1);
 }
