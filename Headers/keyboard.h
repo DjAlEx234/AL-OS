@@ -1,6 +1,5 @@
 #ifndef keyboardh
 #define keyboardh
 void keyboard_init();
-void keyboard_reciever_add(void (*reciever)(char c));
-void keyboard_reciever_remove();
+void keyboard_set_reciever(void* reciever);
 #endif

@@ -2,15 +2,7 @@
 #include <stddef.h>
 #include "asm-io.h"
 #include "terminal.h"
-int string_len(const char* string)
-{
-	int len = 0;
-	while (string[len])
-		len++;
-	if (string[0] == 0)
-		return len - 1;
-	return len;
-}
+#include "main.h"
 void disable_cursor()
 {
 	outb(0x3D4, 0x0A);
@@ -44,20 +36,20 @@ void terminal_set(int r, int c)
 void terminal_scroll()
 {
 	for (int num1 = 0; num1 < height; num1++)
-	{
 		for (int num2 = 0; num2 < width; num2++)
-		{
 			video_mem[num1 * width + num2] = video_mem[(num1 + 1) * width + num2];
-		}
-	}
 }
 void printc(char c, int color)
 {
 	if (c == '\0')
 		return;
+	else if (c == '\b')
+	{
+
+	}
 	else if (c == '\n')
 	{
-		int left = 80 - column - 1;//new line was a bit over reactive
+		int left = 80 - column - 1;
 		for (int i = 0; i != left; i++)
 			printc(' ', char_color(0, 0));
 	}

@@ -1,4 +1,5 @@
 #ifndef mainh
 #define mainh
-void command_key_in(char c);
+int string_len(const char* string);
+void command_loop();
 #endif
