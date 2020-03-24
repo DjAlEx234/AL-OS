@@ -11,9 +11,18 @@ int string_len(const char* string)
 		return len - 1;
 	return len;
 }
-void command_key_in(char c)
+void command_key_in(struct modifiers mods)
 {
-  printc(c, char_color(5, 0));
+	if (mods.control == 1)
+		printc(mods.final_key, char_color(8, 0));
+	else if (mods.alt == 1)
+		printc(mods.final_key, char_color(7, 0));
+	else if (mods.shift == 1)
+		printc(mods.final_key, char_color(6, 0));
+	else if (mods.caps == 1)
+		printc(mods.final_key, char_color(5, 0));
+	else
+		printc(mods.final_key, char_color(2, 0));
 }
 void command_loop()
 {

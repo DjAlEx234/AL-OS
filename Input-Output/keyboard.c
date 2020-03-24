@@ -45,10 +45,10 @@ unsigned char keyboard[224] =
 };
 void *keyboard_reciever;
 char key;
-void keyboard_call()
+void keyboard_call(struct modifiers mod)
 {
-  void (*run)(char c) = keyboard_reciever;
-  run(key);
+  void (*run)(struct modifiers mods) = keyboard_reciever;
+  run(mod);
 }
 bool control;
 bool alt;
@@ -59,21 +59,18 @@ void keyboard_handler(__attribute__((unused)) struct regs *r)
   unsigned char scancode;
   scancode = inb(0x60);
   if (scancode == 0x3A)
-  {
     caps = !caps;
-    return;
-  }
   if ((scancode == 0x2A) || (scancode == 0x36))
     shift = true;
   else if ((scancode == 0xAA) || (scancode == 0xB6))
     shift = false;
-  if ((scancode == 0x1D) || (scancode == 0x36))
+  if (scancode == 0x1D)
     control = true;
-  else if ((scancode == 0xAD) || (scancode == 0xB6))
+  else if (scancode == 0x9D)
     control = false;
-  if ((scancode == 0x38) || (scancode == 0x36))
+  if (scancode == 0x38)
     alt = true;
-  else if ((scancode == 0xB8) || (scancode == 0xB6))
+  else if (scancode == 0xB8)
     alt = false;
   bool uppercase = true;
   if (shift == caps)
@@ -82,7 +79,13 @@ void keyboard_handler(__attribute__((unused)) struct regs *r)
   if (uppercase)
     if (key >= 'a' && key <= 'z')
       key = key - ('a' - 'A');
-  keyboard_call();
+  struct modifiers send;
+  send.control = control;
+  send.alt = alt;
+  send.shift = shift;
+  send.caps = caps;
+  send.final_key = key;
+  keyboard_call(send);
 }
 void keyboard_set_reciever(void* reciever)
 {
