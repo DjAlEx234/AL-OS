@@ -11,21 +11,30 @@ int string_len(const char* string)
 		return len - 1;
 	return len;
 }
+char buffer[99];
+int bufferindex = 0;
+void command_run(char* cmd)
+{
+	for (int i = 0; i < bufferindex - 1; i++)
+		printc(cmd[i], 9, 0);
+	prints("\nal-os>", 5, 0);
+}
 void command_key_in(struct modifiers mods)
 {
-	if (mods.control == 1)
-		printc(mods.final_key, char_color(8, 0));
-	else if (mods.alt == 1)
-		printc(mods.final_key, char_color(7, 0));
-	else if (mods.shift == 1)
-		printc(mods.final_key, char_color(6, 0));
-	else if (mods.caps == 1)
-		printc(mods.final_key, char_color(5, 0));
-	else
-		printc(mods.final_key, char_color(2, 0));
+	printc(mods.final_key, 2, 0);
+	buffer[bufferindex] = mods.final_key;
+	if (bufferindex != 99)
+		bufferindex++;
+	if (mods.final_key == '\n')
+	{
+		command_run(buffer);
+		bufferindex = 0;
+		return;
+	}
 }
 void command_loop()
 {
 	keyboard_set_reciever(command_key_in);
+	prints("al-os>", 5, 0);
 	while (1);
 }

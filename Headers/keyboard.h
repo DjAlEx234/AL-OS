@@ -8,5 +8,6 @@ struct modifiers
 {
   bool control, alt, shift, caps;
   char final_key;
+  int scancode;
 };
 #endif

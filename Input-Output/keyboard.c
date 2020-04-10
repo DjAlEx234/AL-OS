@@ -85,6 +85,7 @@ void keyboard_handler(__attribute__((unused)) struct regs *r)
   send.shift = shift;
   send.caps = caps;
   send.final_key = key;
+  send.scancode = (int)scancode;
   keyboard_call(send);
 }
 void keyboard_set_reciever(void* reciever)
