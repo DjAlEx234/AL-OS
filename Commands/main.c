@@ -11,26 +11,50 @@ int string_len(const char* string)
 		return len - 1;
 	return len;
 }
-char buffer[99];
-int bufferindex = 0;
-void command_run(char* cmd)
+bool checkstring(char a[], char b[])
 {
-	for (int i = 0; i < bufferindex - 1; i++)
-		printc(cmd[i], 9, 0);
+	int c = string_len(b);
+	for (int d = 0; d != c; d++)
+	{
+		if (a[d] != b[d])
+			return false;
+	}
+	return true;
+}
+char buff[100];
+int bufi = 0;
+void command_run()
+{
+	char new[25][25];
+	int b = 0, c = 0;
+	for (int a = 0; a <= bufi; a++)
+	{
+		if (buff[a] == ' ' || buff[a] == '\n')
+		{
+			new[b][c] = '\0';
+			b++;
+			c = 0;
+		}
+		else
+		{
+			new[b][c] = buff[a];
+			c++;
+		}
+	}
+	prints(new[0], 9, 0);
 	prints("\nal-os>", 5, 0);
+	bufi = 0;
 }
 void command_key_in(struct modifiers mods)
 {
-	printc(mods.final_key, 2, 0);
-	buffer[bufferindex] = mods.final_key;
-	if (bufferindex != 99)
-		bufferindex++;
-	if (mods.final_key == '\n')
-	{
-		command_run(buffer);
-		bufferindex = 0;
+	if (mods.final_key == 0)
 		return;
-	}
+	printc(mods.final_key, 2, 0);
+	buff[bufi] = mods.final_key;
+	if (bufi != 100)
+		bufi++;
+	if (mods.final_key == '\n')
+		command_run();
 }
 void command_loop()
 {
