@@ -35,16 +35,16 @@ void command_run(char new[25][25])
 	{
 		prints("AL-OS Version 0.0.4\nStage Pre-Alpha\n", 9, 0);
 	}
-	else if (checkstring(new[0], "list"))
+	else if (checkstring(new[0], "help"))
 	{
-		prints("about - about AL-OS\nlist - lists all commands\n", 9, 0);
+		prints("about - about AL-OS\nhelp - lists all commands\n", 9, 0);
 	}
 	else
 	{
 		printc('\"', 8, 0);
 		prints(new[0], 12, 0);
 		printc('\"', 8, 0);
-		prints(" is not a valid command. Try using \"list\" to find valid commands.\n", 9, 0);
+		prints(" is not a valid command. Try using \"help\" to find valid commands.\n", 9, 0);
 	}
 }
 void command_parse()
