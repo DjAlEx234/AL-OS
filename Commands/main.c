@@ -79,6 +79,8 @@ void command_key_in(struct modifiers mods)
 			return;
 		buff[bufi] = 0;
 		bufi--;
+		printc('\b', 2, 0);
+		return;
 	}
 	printc(mods.final_key, 2, 0);
 	if (mods.final_key >= 'A' && mods.final_key <= 'Z')
