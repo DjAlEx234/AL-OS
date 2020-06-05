@@ -44,6 +44,8 @@ void terminal_clear(enum color_list bg)
 	for (int y = 0; y < height; y++)
 		for (int x = 0; x < width; x++)
 			video_mem[y * width + x] = char_entry('\0', char_color(0, bg));
+	row = 0;
+	column = 0;
 }
 void printc(char c, enum color_list fg, enum color_list bg)
 {
@@ -83,6 +85,4 @@ void terminal_init(void)
 	disable_cursor();
 	video_mem = (uint16_t*)0xB8000;
 	terminal_clear(0);
-	row = 0;
-	column = 0;
 }

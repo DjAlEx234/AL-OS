@@ -3,7 +3,6 @@ extern idtp
 idt_load:
     lidt [idtp]
     ret
-
 global gdt_flush
 extern gp
 gdt_flush:
@@ -17,7 +16,6 @@ gdt_flush:
     jmp 0x08:flush2
 flush2:
     ret
-
 global irq0
 global irq1
 global irq2
@@ -138,7 +136,6 @@ irq15:
     push byte 0
     push byte 47
     jmp irq_common_stub
-
 global isr0
 global isr1
 global isr2
