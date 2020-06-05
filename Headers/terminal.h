@@ -21,6 +21,7 @@ enum color_list {
 };
 void terminal_init(void);
 void terminal_set(int r, int c);
+void terminal_clear(enum color_list bg);
 uint16_t char_entry(unsigned char c, uint8_t color);
 uint8_t char_color(enum color_list fg, enum color_list bg);
 void printc(char c, enum color_list fg, enum color_list bg);

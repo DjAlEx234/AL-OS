@@ -32,13 +32,11 @@ int bufi = 0;
 void command_run(char new[25][25])
 {
 	if (checkstring(new[0], "about"))
-	{
 		prints("AL-OS Version 0.0.4\nStage Pre-Alpha\n", 9, 0);
-	}
+	else if (checkstring(new[0], "cls"))
+		terminal_clear(0);
 	else if (checkstring(new[0], "help"))
-	{
-		prints("about - about AL-OS\nhelp - lists all commands\n", 9, 0);
-	}
+		prints("about - about AL-OS\ncls - clears the screen\nhelp - lists all commands\n", 9, 0);
 	else
 	{
 		printc('\"', 8, 0);

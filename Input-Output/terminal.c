@@ -39,6 +39,12 @@ void terminal_scroll()
 		for (int num2 = 0; num2 < width; num2++)
 			video_mem[num1 * width + num2] = video_mem[(num1 + 1) * width + num2];
 }
+void terminal_clear(enum color_list bg)
+{
+	for (int y = 0; y < height; y++)
+		for (int x = 0; x < width; x++)
+			video_mem[y * width + x] = char_entry('\0', char_color(0, bg));
+}
 void printc(char c, enum color_list fg, enum color_list bg)
 {
 	if (c == '\b')
@@ -74,16 +80,9 @@ void prints(char* s, enum color_list fg, enum color_list bg)
 }
 void terminal_init(void)
 {
-  disable_cursor();
-	int start_fg = 0;
-	int start_bg = 0;
-  video_mem = (uint16_t*)0xB8000;
-  for (int y = 0; y < height; y++){
-    for (int x = 0; x < width; x++){
-      int spot = y * width + x;
-      video_mem[spot] = char_entry(' ', char_color(start_fg, start_bg));
-    }
-  }
+	disable_cursor();
+	video_mem = (uint16_t*)0xB8000;
+	terminal_clear(0);
 	row = 0;
-  column = 0;
+	column = 0;
 }
