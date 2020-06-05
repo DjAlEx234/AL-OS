@@ -43,6 +43,10 @@ unsigned char keyboard[224] =
     0, 0,  //F11 to F12
     0,	//Others set to 0
 };
+unsigned char number[10] =
+{
+  ')', '!', '@', '#', '$', '%', '^', '&', '*', '('
+};
 void *keyboard_reciever;
 char key;
 void keyboard_call(struct modifiers mod)
@@ -57,6 +61,7 @@ bool caps = false;
 void keyboard_handler(__attribute__((unused)) struct regs *r)
 {
   unsigned char scancode;
+  struct modifiers send;
   scancode = inb(0x60);
   if (scancode == 0x3A)
     caps = !caps;
@@ -76,16 +81,18 @@ void keyboard_handler(__attribute__((unused)) struct regs *r)
   if (shift == caps)
     uppercase = false;
   key = keyboard[scancode];
+  send.prekey = key;
   if (uppercase)
     if (key >= 'a' && key <= 'z')
       key = key - ('a' - 'A');
-  struct modifiers send;
+  if (key >= '0' && key <= '9')
+    if (shift)
+      key = number[key - 48];
   send.control = control;
   send.alt = alt;
   send.shift = shift;
   send.caps = caps;
   send.final_key = key;
-  send.scancode = (int)scancode;
   keyboard_call(send);
 }
 void keyboard_set_reciever(void* reciever)

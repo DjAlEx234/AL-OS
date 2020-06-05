@@ -7,7 +7,6 @@ struct modifiers;
 struct modifiers
 {
   bool control, alt, shift, caps;
-  char final_key;
-  int scancode;
+  char prekey, final_key;
 };
 #endif

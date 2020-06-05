@@ -41,6 +41,12 @@ void terminal_scroll()
 }
 void printc(char c, enum color_list fg, enum color_list bg)
 {
+	if (c == '\b')
+	{
+		column--;
+		video_mem[row * width + column] = char_entry(0, char_color(fg, bg));
+		return;
+	}
 	if (c == '\0')
 		return;
 	else if (c == '\n')
